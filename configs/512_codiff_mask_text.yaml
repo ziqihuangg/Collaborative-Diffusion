@@ -1,0 +1,58 @@
+model:
+  base_learning_rate: 2.0e-06
+  target: ldm.models.diffusion.ddpm_compose.LatentDiffusionCompose
+  params:
+
+    linear_start: 0.0015
+    linear_end: 0.0195
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    first_stage_key: image
+    cond_stage_key: seg_mask_and_text
+    image_size: 64
+    channels: 3
+    cond_stage_trainable: True # so that don't need to change LatentDiffusion def forward's code
+    conditioning_key: crossattn
+    monitor: val/loss_simple
+    scale_factor: 0.141
+    use_ema: False
+
+    seg_mask_ldm_config_path: configs/512_mask.yaml
+    seg_mask_ldm_ckpt_path: pretrained/512_mask.ckpt
+    text_ldm_config_path: configs/512_text.yaml
+    text_ldm_ckpt_path: pretrained/512_text.ckpt
+
+    compose_unet_config:
+      target: ldm.models.diffusion.compose_modules.ComposeUNet
+      params:
+        confidence_conditioning_key: crossattn
+        confidence_input: x_t
+        confidence_map_predictor_config:
+          target: ldm.modules.diffusionmodules.openaimodel.UNetModel
+          params:
+            image_size: 64
+            in_channels: 3
+            out_channels: 1
+            model_channels: 32 # originally: 192
+            attention_resolutions:
+            - 8
+            - 4
+            - 2
+            num_res_blocks: 2
+            channel_mult:
+            - 1
+            - 2
+            - 3
+            - 5
+            num_heads: 32
+            use_spatial_transformer: true
+            transformer_depth: 1
+            context_dim: 640
+            use_checkpoint: true
+            legacy: False
+
+
+    compose_cond_stage_config:
+      target: ldm.models.diffusion.compose_modules.ComposeCondStageModel
+      params: {}

@@ -1,0 +1,17 @@
+# temporary hold
+main.py
+
+# postscripts
+*.ckpt
+*.zip
+*.pyc
+
+# directories
+pretrained
+outputs
+src
+trash
+stashed_for_git
+private_scripts
+
+latent_diffusion.egg-info
