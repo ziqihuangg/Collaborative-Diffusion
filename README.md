@@ -1,4 +1,4 @@
-# Collaborative Diffusion for Multi-Modal Face Generation and Editing
+# Collaborative Diffusion (CVPR 2023)
 
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=ziqihuangg/Collaborative-Diffusion&right_color=IndianRed)
 <!-- [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-66cdaa)](https://huggingface.co/spaces/Ziqi/ReVersion) -->
@@ -6,6 +6,7 @@
 This repository contains the implementation of the following paper:
 > **Collaborative Diffusion for Multi-Modal Face Generation and Editing**<br>
 > [Ziqi Huang](https://ziqihuangg.github.io/), [Kelvin C.K. Chan](https://ckkelvinchan.github.io/), [Yuming Jiang](https://yumingj.github.io/), [Ziwei Liu](https://liuziwei7.github.io/)<br>
+IEEE/CVF International Conference on Computer Vision (**CVPR**), 2023
 
 From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Technological University
 
@@ -18,7 +19,7 @@ From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Tech
 
 ## Overview
 <!-- ![overall_structure](./assets/fig_teaser.jpg) -->
-<img src="./assets/fig_teaser.jpg" width="60%">
+<img src="./assets/fig_teaser.jpg" width="100%">
 
 We propose **Collaborative Diffusion**, where users can use multiple modalities to control face generation and editing.
     *(a) Face Generation*. Given multi-modal controls, our framework synthesizes high-quality images consistent with the input conditions.
@@ -72,6 +73,7 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
 ## Generation
 You can control face generation using text and segmentation mask.
 1. `mask_path` is the path to the segmentation mask, and `input_text` is the text condition.
+
     ```bash
     python generate_512.py \
     --mask_path test_data/512_masks/27007.png \
@@ -82,7 +84,9 @@ You can control face generation using text and segmentation mask.
     --mask_path test_data/512_masks/29980.png \
     --input_text "This woman is in her forties."
     ```
-2. You can view different types of intermediate outputs by setting the flags as `1`. For example,  to view the influence functions, you can set `return_influence_function` to `1`.
+
+2. You can view different types of intermediate outputs by setting the flags as `1`. For example,  to view the *influence functions*, you can set `return_influence_function` to `1`.
+
     ```bash
     python generate_512.py \
     --mask_path test_data/512_masks/27007.png \
