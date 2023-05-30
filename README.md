@@ -1,6 +1,6 @@
 # Collaborative Diffusion (CVPR 2023)
 
-![visitors](https://visitor-badge.glitch.me/badge?page_id=ziqihuangg/Collaborative-Diffusion&right_color=IndianRed)
+<!-- ![visitors](https://visitor-badge.glitch.me/badge?page_id=ziqihuangg/Collaborative-Diffusion&right_color=IndianRed) -->
 <!-- [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-66cdaa)](https://huggingface.co/spaces/Ziqi/ReVersion) -->
 
 This repository contains the implementation of the following paper:
@@ -10,9 +10,9 @@ IEEE/CVF International Conference on Computer Vision (**CVPR**), 2023
 
 From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Technological University
 
-<!-- [[Paper](https://arxiv.org/abs/2303.13495)] | -->
+[[Paper](https://arxiv.org/abs/2304.10530)] |
 [[Project Page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)]
-<!-- [[Video](https://www.youtube.com/watch?v=pkal3yjyyKQ)] | -->
+[[Video](https://www.youtube.com/watch?v=inLK4c8sNhc)] |
 <!-- [[Dataset (coming soon)]()] -->
 <!-- [[Huggingface Demo](https://huggingface.co/spaces/Ziqi/ReVersion)] | -->
 
