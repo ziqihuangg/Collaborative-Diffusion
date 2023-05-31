@@ -9,7 +9,7 @@ model:
     log_every_t: 200
     timesteps: 1000
     first_stage_key: image
-    cond_stage_key: seg_mask_and_text
+    cond_stage_key: conditions
     image_size: 64
     channels: 3
     cond_stage_trainable: True # so that don't need to change LatentDiffusion def forward's code
@@ -56,3 +56,48 @@ model:
     compose_cond_stage_config:
       target: ldm.models.diffusion.compose_modules.ComposeCondStageModel
       params: {}
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 8
+    wrap: True
+    train:
+      target: ldm.data.celebahq.CelebAConditionalDataset
+      params:
+        phase: train
+        im_preprocessor_config:
+          target: ldm.data.celebahq.DalleTransformerPreprocessor
+          params:
+            size: 512
+            phase: train
+        test_dataset_size: 3000
+        conditions:
+          - 'text'
+          - 'seg_mask'
+    validation:
+      target: ldm.data.celebahq.CelebAConditionalDataset
+      params:
+        phase: test
+        im_preprocessor_config:
+          target: ldm.data.celebahq.DalleTransformerPreprocessor
+          params:
+            size: 512
+            phase: val
+        test_dataset_size: 3000
+        conditions:
+          - 'text'
+          - 'seg_mask'
+
+
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 1000
+        max_images: 8
+        increase_log_steps: False
+
+  trainer:
+    benchmark: True

@@ -1,17 +1,18 @@
-# temporary hold
-main.py
-
 # postscripts
 *.ckpt
 *.zip
 *.pyc
+*.pt
+*.pth
 
 # directories
 pretrained
+dataset
 outputs
 src
 trash
 stashed_for_git
 private_scripts
+ldm/data/trash
 
 latent_diffusion.egg-info

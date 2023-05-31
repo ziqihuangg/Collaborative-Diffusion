@@ -684,7 +684,7 @@ class LatentDiffusion(DDPM):
                     xc = batch[cond_key]
                 elif cond_key == 'class_label':
                     xc = batch
-                elif cond_key == 'seg_mask_and_text':
+                elif cond_key == 'seg_mask_and_text' or 'conditions':
                     xc = batch[cond_key]
                 else:
                     xc = super().get_input(batch, cond_key).to(self.device)

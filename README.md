@@ -1,7 +1,5 @@
 # Collaborative Diffusion (CVPR 2023)
 
-<!-- ![visitors](https://visitor-badge.glitch.me/badge?page_id=ziqihuangg/Collaborative-Diffusion&right_color=IndianRed) -->
-<!-- [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-66cdaa)](https://huggingface.co/spaces/Ziqi/ReVersion) -->
 
 This repository contains the implementation of the following paper:
 > **Collaborative Diffusion for Multi-Modal Face Generation and Editing**<br>
@@ -13,8 +11,6 @@ From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Tech
 [[Paper](https://arxiv.org/abs/2304.10530)] |
 [[Project Page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)]
 [[Video](https://www.youtube.com/watch?v=inLK4c8sNhc)] |
-<!-- [[Dataset (coming soon)]()] -->
-<!-- [[Huggingface Demo](https://huggingface.co/spaces/Ziqi/ReVersion)] | -->
 
 
 ## Overview
@@ -25,10 +21,10 @@ We propose **Collaborative Diffusion**, where users can use multiple modalities 
     *(a) Face Generation*. Given multi-modal controls, our framework synthesizes high-quality images consistent with the input conditions.
     *(b) Face Editing*. Collaborative Diffusion also supports multi-modal editing of real images with promising identity preservation capability.
 ## Updates
-<!-- - [04/2023] Integrated into [Hugging Face 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the online Demo: [![Hugging Face](https://img.shields.io/badge/Demo-%F0%9F%A4%97%20Hugging%20Face-66cdaa)](https://huggingface.co/spaces/Ziqi/ReVersion)
-- [03/2023] [Arxiv paper](https://arxiv.org/abs/2303.13495) available.
-- [03/2023] Pre-trained models with relation prompts released at [this link](https://drive.google.com/drive/folders/1apFk6TF3pGH00hHF1nO1S__tDlrcLQAh?usp=sharing).
-- [03/2023] [Project page](https://ziqihuangg.github.io/projects/reversion.html) and [video](https://www.youtube.com/watch?v=pkal3yjyyKQ) available. -->
+- [05/2023] Training code for Collaborative Diffusion (512x512) released.
+- [04/2023] [Project page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html) and [video](https://www.youtube.com/watch?v=inLK4c8sNhc) available.
+- [04/2023] [Arxiv paper](https://arxiv.org/abs/2304.10530) available.
+- [04/2023] Checkpoints for multi-modal face generation (512x512) released.
 - [04/2023] Inference code for multi-modal face generation (512x512) released.
 
 
@@ -102,13 +98,50 @@ You can control face generation using text and segmentation mask.
 
 ## Training
 
-### Training Dynamic Diffusers
 
-The code for training the *Dynamic Diffusers* will be released soon.
+We provide the entire training pipeline, including training the VAE, uni-modal diffusion models, and our proposed dynamic diffusers.
 
-### Training Uni-Modal Diffusion Models
+If you are only interested in training dynamic diffusers, you can use our provided checkpoints for VAE and uni-modal diffusion models. Simply skip step 1 and 2 and directly look at step 3.
 
-The code for training the uni-modal diffusion models will be released soon.
+1. **Train VAE.**
+
+    LDM compresses images to the VAE latents to save computational cost, and later train UNet diffusion models on the VAE latents. This step is to reproduce the `pretrained/512_vae.ckpt`.
+
+    ```bash
+    python main.py \
+    --logdir 'outputs/512_vae' \
+    --base 'configs/512_vae.yaml' \
+    -t  --gpus 0,
+    ```
+
+2. **Train the uni-modal diffusion models.**
+
+    (1) train text-to-image model. This step is to reproduce the `pretrained/512_text.ckpt`.
+    ```bash
+    python main.py \
+    --logdir 'outputs/512_text' \
+    --base 'configs/512_text.yaml' \
+    -t  --gpus 0,
+    ```
+    (2) train mask-to-image model. This step is to reproduce the `pretrained/512_mask.ckpt`.
+    ```bash
+    python main.py \
+    --logdir 'outputs/512_mask' \
+    --base 'configs/512_mask.yaml' \
+    -t  --gpus 0,
+    ```
+
+
+3. **Train the dynamic diffusers.**
+
+    The dynamic diffusers are the meta-networks that determine how the uni-modal diffusion models collaborate together. This step is to reproduce the `pretrained/512_codiff_mask_text.ckpt`.
+    ```bash
+    python main.py \
+    --logdir 'outputs/512_codiff_mask_text' \
+    --base 'configs/512_codiff_mask_text.yaml' \
+    -t  --gpus 0,
+    ```
+
 
 ## Citation
 
