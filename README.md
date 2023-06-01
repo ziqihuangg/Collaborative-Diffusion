@@ -9,8 +9,8 @@ IEEE/CVF International Conference on Computer Vision (**CVPR**), 2023
 From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Technological University
 
 [[Paper](https://arxiv.org/abs/2304.10530)] |
-[[Project Page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)]
-[[Video](https://www.youtube.com/watch?v=inLK4c8sNhc)] |
+[[Project Page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)] |
+[[Video](https://www.youtube.com/watch?v=inLK4c8sNhc)]
 
 
 ## Overview
@@ -20,7 +20,14 @@ From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Tech
 We propose **Collaborative Diffusion**, where users can use multiple modalities to control face generation and editing.
     *(a) Face Generation*. Given multi-modal controls, our framework synthesizes high-quality images consistent with the input conditions.
     *(b) Face Editing*. Collaborative Diffusion also supports multi-modal editing of real images with promising identity preservation capability.
+
+<br>
+<img src="./assets/fig_framework.jpg" width="100%">
+
+We use pre-trained uni-modal diffusion models to perform multi-modal guided face generation and editing. At each step of the reverse process (i.e., from timestep t to t − 1), the **dynamic diffuser** predicts the spatial-varying and temporal-varying **influence function** to *selectively enhance or suppress the contributions of the given modality*.
+
 ## Updates
+- [06/2023] We provide the preprocessed multi-modal annotations [here](https://drive.google.com/drive/folders/1rLcdN-VctJpW4k9AfSXWk0kqxh329xc4?usp=sharing).
 - [05/2023] Training code for Collaborative Diffusion (512x512) released.
 - [04/2023] [Project page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html) and [video](https://www.youtube.com/watch?v=inLK4c8sNhc) available.
 - [04/2023] [Arxiv paper](https://arxiv.org/abs/2304.10530) available.
@@ -54,7 +61,10 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
    ```
 
 ## Download
-1. Download the pre-trained models from [here](https://drive.google.com/drive/folders/1bgrd7roog8C0ZGRakUSguCH9kjNBaaWF?usp=sharing).
+
+### Download Checkpoints
+
+1. Download the pre-trained models from [here](https://drive.google.com/drive/folders/13MdDea8eI8P4ygeIyfy8krlTb8Ty0mAP?usp=sharing).
 
 2. Put the models under `pretrained` as follows:
     ```
@@ -65,6 +75,26 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
         ├── 512_text.ckpt
         └── 512_vae.ckpt
     ```
+### Download Datasets
+We provide preprocessed data used in this project (see Acknowledgement for data source). You need download them only if you want to reproduce the training of Collaborative Diffusion. You can skip this step if you simply want to use our pre-trained models for inference.
+
+1. Download the preprocessed training data from [here](https://drive.google.com/drive/folders/1rLcdN-VctJpW4k9AfSXWk0kqxh329xc4?usp=sharing).
+
+2. Put the datasets under `dataset` as follows:
+    ```
+    Collaborative-Diffusion
+    └── dataset
+        ├── image
+        |   └──image_512_downsampled_from_hq_1024
+        ├── text
+        |   └──captions_hq_beard_and_age_2022-08-19.json
+        ├── mask
+        |   └──CelebAMask-HQ-mask-color-palette_32_nearest_downsampled_from_hq_512_one_hot_2d_tensor
+        └── sketch
+            └──sketch_1x1024_tensor
+    ```
+
+For more details about the annotations, please refer to [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog).
 
 ## Generation
 You can control face generation using text and segmentation mask.
@@ -111,7 +141,7 @@ If you are only interested in training dynamic diffusers, you can use our provid
     python main.py \
     --logdir 'outputs/512_vae' \
     --base 'configs/512_vae.yaml' \
-    -t  --gpus 0,
+    -t  --gpus 0,1,2,3,
     ```
 
 2. **Train the uni-modal diffusion models.**
@@ -121,14 +151,14 @@ If you are only interested in training dynamic diffusers, you can use our provid
     python main.py \
     --logdir 'outputs/512_text' \
     --base 'configs/512_text.yaml' \
-    -t  --gpus 0,
+    -t  --gpus 0,1,2,3,
     ```
     (2) train mask-to-image model. This step is to reproduce the `pretrained/512_mask.ckpt`.
     ```bash
     python main.py \
     --logdir 'outputs/512_mask' \
     --base 'configs/512_mask.yaml' \
-    -t  --gpus 0,
+    -t  --gpus 0,1,2,3,
     ```
 
 
@@ -139,7 +169,7 @@ If you are only interested in training dynamic diffusers, you can use our provid
     python main.py \
     --logdir 'outputs/512_codiff_mask_text' \
     --base 'configs/512_codiff_mask_text.yaml' \
-    -t  --gpus 0,
+    -t  --gpus 0,1,2,3,
     ```
 
 
@@ -161,4 +191,4 @@ If you are only interested in training dynamic diffusers, you can use our provid
 
 The codebase is maintained by [Ziqi Huang](https://ziqihuangg.github.io/).
 
-This project is built on top of [LDM](https://github.com/CompVis/latent-diffusion).
+This project is built on top of [LDM](https://github.com/CompVis/latent-diffusion). We trained on data provided by [CelebA-HQ](https://github.com/tkarras/progressive_growing_of_gans), [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog), [CelebAMask-HQ](https://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html), and [MM-CelebA-HQ-Dataset](https://github.com/IIGROUP/MM-CelebA-HQ-Dataset).

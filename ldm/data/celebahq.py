@@ -81,7 +81,7 @@ class CelebAConditionalDataset(Dataset):
         im_preprocessor_config=None,
         test_dataset_size=3000,
         conditions = ['seg_mask', 'text', 'sketch'],
-        image_folder = 'datasets/image_512_downsampled_from_hq_1024',
+        image_folder = 'datasets/image/image_512_downsampled_from_hq_1024',
         text_file = 'datasets/text/captions_hq_beard_and_age_2022-08-19.json',
         mask_folder = 'datasets/mask/CelebAMask-HQ-mask-color-palette_32_nearest_downsampled_from_hq_512_one_hot_2d_tensor',
         sketch_folder = 'datasets/sketch/sketch_1x1024_tensor',
