@@ -45,7 +45,7 @@ We use pre-trained uni-modal diffusion models to perform multi-modal guided face
    ```
 
 2. Create conda environment.<br>
-If you already have an `ldm` environment installed according to [LDM](https://github.com/CompVis/latent-diffusion#requirements), you do not need to go throught this step (i.e., step 2). You can simply `conda activate ldm` and jump to step 3.
+If you already have an `ldm` environment installed according to [LDM](https://github.com/CompVis/latent-diffusion#requirements), you do not need to go throught this step (i.e., step 2). You can simply `conda activate codiff` and jump to step 3.
 
    ```bash
     conda env create -f environment.yaml
