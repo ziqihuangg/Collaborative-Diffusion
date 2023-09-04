@@ -64,7 +64,7 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
 
 ### Download Checkpoints
 
-1. Download the pre-trained models from [here](https://drive.google.com/drive/folders/13MdDea8eI8P4ygeIyfy8krlTb8Ty0mAP?usp=sharing).
+1. Download the pre-trained models from [Google Drive](https://drive.google.com/drive/folders/13MdDea8eI8P4ygeIyfy8krlTb8Ty0mAP?usp=sharing) or [OneDrive](https://entuedu-my.sharepoint.com/:f:/g/personal/ziqi002_e_ntu_edu_sg/ErjBxdNGbyhJtnPLFWxLJkABb1dScdz9T0kCjzYC65y17g?e=cn5F9h).
 
 2. Put the models under `pretrained` as follows:
     ```
@@ -125,6 +125,29 @@ You can control face generation using text and segmentation mask.
     --save_mixed 1
     ```
     Note that producing intermediate results might consume a lot of GPU memory, so we suggest setting `batch_size` to `1`, and setting `ddim_steps` to a smaller value (e.g., `10`) to save memory and computation time.
+
+## Editing
+You can edit a face image according to target mask and target text. We achieve this by collaborating multiple uni-modal edits. We use [Imagic](https://imagic-editing.github.io/) to perform the uni-modal edits.
+
+1. Perform text-based editing.
+    ```bash
+    python editing/imagic_edit_text.py
+    ```
+
+1. Perform mask-based editing. Note that we adapted Imagic (the text-based method) to mask-based editing.
+    ```bash
+    python editing/imagic_edit_mask.py
+    ```
+
+3. Collaborate the text-based edit and the mask-based edit using Collaborative Diffusion.
+
+    ```bash
+    python editing/collaborative_edit.py
+    ```
+
+
+
+
 
 ## Training
 
@@ -191,4 +214,4 @@ If you are only interested in training dynamic diffusers, you can use our provid
 
 The codebase is maintained by [Ziqi Huang](https://ziqihuangg.github.io/).
 
-This project is built on top of [LDM](https://github.com/CompVis/latent-diffusion). We trained on data provided by [CelebA-HQ](https://github.com/tkarras/progressive_growing_of_gans), [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog), [CelebAMask-HQ](https://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html), and [MM-CelebA-HQ-Dataset](https://github.com/IIGROUP/MM-CelebA-HQ-Dataset).
+This project is built on top of [LDM](https://github.com/CompVis/latent-diffusion). We trained on data provided by [CelebA-HQ](https://github.com/tkarras/progressive_growing_of_gans), [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog), [CelebAMask-HQ](https://mmlab.ie.cuhk.edu.hk/projects/CelebA/CelebAMask_HQ.html), and [MM-CelebA-HQ-Dataset](https://github.com/IIGROUP/MM-CelebA-HQ-Dataset). We also make use of the [Imagic implementation](https://github.com/justinpinkney/stable-diffusion/blob/main/notebooks/imagic.ipynb).
