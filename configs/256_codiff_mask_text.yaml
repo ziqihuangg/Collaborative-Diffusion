@@ -15,13 +15,13 @@ model:
     cond_stage_trainable: True # so that don't need to change LatentDiffusion def forward's code
     conditioning_key: crossattn
     monitor: val/loss_simple
-    scale_factor: 0.141
+    scale_factor: 0.058
     use_ema: False
 
-    seg_mask_ldm_config_path: configs/512_mask.yaml
-    seg_mask_ldm_ckpt_path: pretrained/512_mask.ckpt
-    text_ldm_config_path: configs/512_text.yaml
-    text_ldm_ckpt_path: pretrained/512_text.ckpt
+    seg_mask_ldm_config_path: configs/256_mask.yaml
+    seg_mask_ldm_ckpt_path: pretrained/256_mask.ckpt
+    text_ldm_config_path: configs/256_text.yaml
+    text_ldm_ckpt_path: pretrained/256_text.ckpt
 
     compose_unet_config:
       target: ldm.models.diffusion.compose_modules.ComposeUNet
@@ -69,12 +69,13 @@ data:
         im_preprocessor_config:
           target: ldm.data.celebahq.DalleTransformerPreprocessor
           params:
-            size: 512
+            size: 256
             phase: train
         test_dataset_size: 3000
         conditions:
           - 'text'
           - 'seg_mask'
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
     validation:
       target: ldm.data.celebahq.CelebAConditionalDataset
       params:
@@ -82,13 +83,13 @@ data:
         im_preprocessor_config:
           target: ldm.data.celebahq.DalleTransformerPreprocessor
           params:
-            size: 512
+            size: 256
             phase: val
         test_dataset_size: 3000
         conditions:
           - 'text'
           - 'seg_mask'
-
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
 
 lightning:
   callbacks:

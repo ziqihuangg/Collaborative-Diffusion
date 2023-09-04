@@ -99,12 +99,6 @@ def parse_args():
         help="whether display the intermediate DDIM outputs (x_t and pred_x_0) and save them in the output folder",
     )
     parser.add_argument(
-        "--sum_unet_outputs",
-        type=bool,
-        default=False,
-        help="TBC",
-    )
-    parser.add_argument(
         "--save_mixed",
         type=bool,
         default=False,

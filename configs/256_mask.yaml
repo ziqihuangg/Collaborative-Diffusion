@@ -8,13 +8,13 @@ model:
     log_every_t: 200
     timesteps: 1000
     first_stage_key: image
-    cond_stage_key: caption
+    cond_stage_key: seg_mask
     image_size: 64
     channels: 3
     cond_stage_trainable: true
     conditioning_key: crossattn
     monitor: val/loss_simple_ema
-    scale_factor: 0.141
+    scale_factor: 0.058
     use_ema: False
 
     unet_config:
@@ -46,15 +46,15 @@ model:
       params:
         embed_dim: 3
         monitor: val/rec_loss
-        ckpt_path: pretrained/512_vae.ckpt
+        ckpt_path: pretrained/256_vae.ckpt
         ddconfig:
           double_z: true
           z_channels: 3
-          resolution: 512
+          resolution: 256
           in_channels: 3
           out_ch: 3
           ch: 128
-          ch_mult: [1, 2, 4, 4]
+          ch_mult: [1, 2, 4]
           num_res_blocks: 2
           attn_resolutions: [ ]
           dropout: 0.0
@@ -62,10 +62,14 @@ model:
           target: torch.nn.Identity
 
     cond_stage_config:
-      target: ldm.modules.encoders.modules.BERTEmbedder
+      target: ldm.modules.encoders.modules.SegMaskEncoder
       params:
-        n_embed: 640
-        n_layer: 32
+        seg_mask_encoder_config:
+          target: ldm.modules.encoders.modules.PassSegMaskEncoder
+          params: {}
+        mask_embed_dim: 1024
+        context_dim: 640
+
 
 data:
   target: main.DataModuleFromConfig
@@ -79,11 +83,12 @@ data:
         im_preprocessor_config:
           target: ldm.data.celebahq.DalleTransformerPreprocessor
           params:
-            size: 512
+            size: 256
             phase: train
         test_dataset_size: 3000
         conditions:
-          - 'text'
+          - 'seg_mask'
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
     validation:
       target: ldm.data.celebahq.CelebAConditionalDataset
       params:
@@ -91,12 +96,12 @@ data:
         im_preprocessor_config:
           target: ldm.data.celebahq.DalleTransformerPreprocessor
           params:
-            size: 512
+            size: 256
             phase: val
         test_dataset_size: 3000
         conditions:
-          - 'text'
-
+          - 'seg_mask'
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
 
 lightning:
   callbacks:

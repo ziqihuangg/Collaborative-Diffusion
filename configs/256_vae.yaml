@@ -1,0 +1,68 @@
+model:
+  base_learning_rate: 4.5e-6
+  target: ldm.models.autoencoder.AutoencoderKL
+  params:
+    monitor: "val/rec_loss"
+    embed_dim: 3
+    lossconfig:
+      target: ldm.modules.losses.LPIPSWithDiscriminator
+      params:
+        disc_start: 50001
+        kl_weight: 0.000001
+        disc_weight: 0.5
+
+    ddconfig:
+      double_z: True
+      z_channels: 3
+      resolution: 256
+      in_channels: 3
+      out_ch: 3
+      ch: 128
+      ch_mult: [ 1,2,4 ]
+      num_res_blocks: 2
+      attn_resolutions: [ ]
+      dropout: 0.0
+
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 8
+    wrap: True
+    train:
+      target: ldm.data.celebahq.CelebAConditionalDataset
+      params:
+        phase: train
+        im_preprocessor_config:
+          target: ldm.data.celebahq.DalleTransformerPreprocessor
+          params:
+            size: 256
+            phase: train
+        test_dataset_size: 3000
+        conditions: []
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
+    validation:
+      target: ldm.data.celebahq.CelebAConditionalDataset
+      params:
+        phase: test
+        im_preprocessor_config:
+          target: ldm.data.celebahq.DalleTransformerPreprocessor
+          params:
+            size: 256
+            phase: val
+        test_dataset_size: 3000
+        conditions: []
+        image_folder: 'datasets/image_256_downsampled_from_hq_1024'
+
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 1000
+        max_images: 8
+        increase_log_steps: True
+
+  trainer:
+    benchmark: True
+    accumulate_grad_batches: 2
