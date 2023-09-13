@@ -27,6 +27,7 @@ We propose **Collaborative Diffusion**, where users can use multiple modalities 
 We use pre-trained uni-modal diffusion models to perform multi-modal guided face generation and editing. At each step of the reverse process (i.e., from timestep t to t − 1), the **dynamic diffuser** predicts the spatial-varying and temporal-varying **influence function** to *selectively enhance or suppress the contributions of the given modality*.
 
 ## Updates
+- [09/2023] We provide inference script of face generation driven by single modality.
 - [09/2023] [Editing code](https://github.com/ziqihuangg/Collaborative-Diffusion#editing) is released.
 - [06/2023] We provide the preprocessed multi-modal annotations [here](https://drive.google.com/drive/folders/1rLcdN-VctJpW4k9AfSXWk0kqxh329xc4?usp=sharing).
 - [05/2023] [Training code](https://github.com/ziqihuangg/Collaborative-Diffusion#training) for Collaborative Diffusion (512x512) released.
@@ -98,6 +99,9 @@ We provide preprocessed data used in this project (see Acknowledgement for data 
 For more details about the annotations, please refer to [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog).
 
 ## Generation
+
+### Multi-Modal-Driven Generation
+
 You can control face generation using text and segmentation mask.
 1. `mask_path` is the path to the segmentation mask, and `input_text` is the text condition.
 
@@ -126,6 +130,51 @@ You can control face generation using text and segmentation mask.
     --save_mixed 1
     ```
     Note that producing intermediate results might consume a lot of GPU memory, so we suggest setting `batch_size` to `1`, and setting `ddim_steps` to a smaller value (e.g., `10`) to save memory and computation time.
+
+### Text-to-Face Generation
+1. Give the text prompt and generate the face image:
+
+    ```bash
+    python text2image.py \
+    --input_text "This man has beard of medium length. He is in his thirties."
+    ```
+    ```bash
+    python text2image.py \
+    --input_text "This woman is in her forties."
+    ```
+
+2. Our script synthesizes 512x512 resolution by default. You can generate 256x256 images by changing the config and ckpt:
+    ```bash
+    python text2image.py \
+    --input_text "This man has beard of medium length. He is in his thirties." \
+    --config_path "configs/256_text.yaml" \
+    --ckpt_path "pretrained/256_text.ckpt" \
+    --save_folder "outputs/256_text2image"
+    ```
+
+
+### Mask-to-Face Generation
+1. Give the face segmentation mask and generate the face image:
+
+    ```bash
+    python mask2image.py \
+    --mask_path "test_data/512_masks/29980.png"
+    ```
+    ```bash
+    python mask2image.py \
+    --mask_path "test_data/512_masks/27007.png"
+    ```
+
+2. Our script above synthesizes 512x512 resolution by default. You can generate 256x256 images by changing the config and ckpt:
+    ```bash
+    python mask2image.py \
+    --mask_path "test_data/256_masks/29980.png" \
+    --config_path "configs/256_mask.yaml" \
+    --ckpt_path "pretrained/256_mask.ckpt" \
+    --save_folder "outputs/256_mask2image"
+    ```
+
+
 
 ## Editing
 You can edit a face image according to target mask and target text. We achieve this by collaborating multiple uni-modal edits. We use [Imagic](https://imagic-editing.github.io/) to perform the uni-modal edits.
