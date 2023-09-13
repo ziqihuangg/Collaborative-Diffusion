@@ -27,7 +27,7 @@ We propose **Collaborative Diffusion**, where users can use multiple modalities 
 We use pre-trained uni-modal diffusion models to perform multi-modal guided face generation and editing. At each step of the reverse process (i.e., from timestep t to t − 1), the **dynamic diffuser** predicts the spatial-varying and temporal-varying **influence function** to *selectively enhance or suppress the contributions of the given modality*.
 
 ## Updates
-- [09/2023] We provide inference script of face generation driven by single modality.
+- [09/2023] We provide inference script of face generation driven by single modality, and the scripts and checkpoints of 256x256 resolution.
 - [09/2023] [Editing code](https://github.com/ziqihuangg/Collaborative-Diffusion#editing) is released.
 - [06/2023] We provide the preprocessed multi-modal annotations [here](https://drive.google.com/drive/folders/1rLcdN-VctJpW4k9AfSXWk0kqxh329xc4?usp=sharing).
 - [05/2023] [Training code](https://github.com/ziqihuangg/Collaborative-Diffusion#training) for Collaborative Diffusion (512x512) released.
@@ -72,6 +72,10 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
     ```
     Collaborative-Diffusion
     └── pretrained
+        ├── 256_codiff_mask_text.ckpt
+        ├── 256_mask.ckpt
+        ├── 256_text.ckpt
+        ├── 256_vae.ckpt
         ├── 512_codiff_mask_text.ckpt
         ├── 512_mask.ckpt
         ├── 512_text.ckpt
@@ -106,12 +110,12 @@ You can control face generation using text and segmentation mask.
 1. `mask_path` is the path to the segmentation mask, and `input_text` is the text condition.
 
     ```bash
-    python generate_512.py \
+    python generate.py \
     --mask_path test_data/512_masks/27007.png \
     --input_text "This man has beard of medium length. He is in his thirties."
     ```
     ```bash
-    python generate_512.py \
+    python generate.py \
     --mask_path test_data/512_masks/29980.png \
     --input_text "This woman is in her forties."
     ```
@@ -119,7 +123,7 @@ You can control face generation using text and segmentation mask.
 2. You can view different types of intermediate outputs by setting the flags as `1`. For example,  to view the *influence functions*, you can set `return_influence_function` to `1`.
 
     ```bash
-    python generate_512.py \
+    python generate.py \
     --mask_path test_data/512_masks/27007.png \
     --input_text "This man has beard of medium length. He is in his thirties." \
     --ddim_steps 10 \
@@ -130,6 +134,17 @@ You can control face generation using text and segmentation mask.
     --save_mixed 1
     ```
     Note that producing intermediate results might consume a lot of GPU memory, so we suggest setting `batch_size` to `1`, and setting `ddim_steps` to a smaller value (e.g., `10`) to save memory and computation time.
+
+3. Our script synthesizes 512x512 resolution by default. You can generate 256x256 images by changing the config and ckpt:
+    ```bash
+    python generate.py \
+    --mask_path test_data/256_masks/29980.png \
+    --input_text "This woman is in her forties." \
+    --config_path "configs/256_codiff_mask_text.yaml" \
+    --ckpt_path "pretrained/256_codiff_mask_text.ckpt" \
+    --save_folder "outputs/inference_256_codiff_mask_text"
+    ```
+
 
 ### Text-to-Face Generation
 1. Give the text prompt and generate the face image:
@@ -165,7 +180,7 @@ You can control face generation using text and segmentation mask.
     --mask_path "test_data/512_masks/27007.png"
     ```
 
-2. Our script above synthesizes 512x512 resolution by default. You can generate 256x256 images by changing the config and ckpt:
+2. Our script synthesizes 512x512 resolution by default. You can generate 256x256 images by changing the config and ckpt:
     ```bash
     python mask2image.py \
     --mask_path "test_data/256_masks/29980.png" \
