@@ -6,6 +6,9 @@ For more details about FreeU, please refer to the [paper](https://arxiv.org/pdf/
 
 
 ## Mask-to-Face Generation:
+<img src="./assets/mask2face_27007.jpeg" width="100%">
+<img src="./assets/mask2face_29980.jpeg" width="100%">
+
 1. without FreeU
     ```bash
     python freeu/mask2image_freeu.py \
@@ -22,6 +25,10 @@ For more details about FreeU, please refer to the [paper](https://arxiv.org/pdf/
     --s2 1
     ```
 ## Text-to-Face Generation:
+
+<img src="./assets/text2face_female.jpeg" width="100%">
+<img src="./assets/text2face_male.jpeg" width="100%">
+
 1. without FreeU
     ```bash
     python freeu/text2image_freeu.py \
