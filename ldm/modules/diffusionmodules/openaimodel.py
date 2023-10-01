@@ -7,6 +7,7 @@ import numpy as np
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.fft as fft
 
 from ldm.modules.diffusionmodules.util import (
     checkpoint,
@@ -27,6 +28,23 @@ def convert_module_to_f16(x):
 def convert_module_to_f32(x):
     pass
 
+def Fourier_filter(x, threshold, scale):
+    # FFT
+    x_freq = fft.fftn(x, dim=(-2, -1))
+    x_freq = fft.fftshift(x_freq, dim=(-2, -1))
+
+    B, C, H, W = x_freq.shape
+    mask = th.ones((B, C, H, W)).cuda()
+
+    crow, ccol = H // 2, W //2
+    mask[..., crow - threshold:crow + threshold, ccol - threshold:ccol + threshold] = scale
+    x_freq = x_freq * mask
+
+    # IFFT
+    x_freq = fft.ifftshift(x_freq, dim=(-2, -1))
+    x_filtered = fft.ifftn(x_freq, dim=(-2, -1)).real
+
+    return x_filtered
 
 ## go
 class AttentionPool2d(nn.Module):
@@ -466,8 +484,24 @@ class UNetModel(nn.Module):
         context_dim=None,                 # custom transformer support
         n_embed=None,                     # custom support for prediction of discrete ids into codebook of first stage vq model
         legacy=True,
+        enable_freeu=False,
+        b1 = 1.1,
+        b2 = 1.2,
+        s1 = 1,
+        s2 = 1,
     ):
         super().__init__()
+
+        # --------------- FreeU code starts -----------------------
+        self.enable_freeu = enable_freeu # Ziqi added for FreeU
+        print(f'self.enable_freeu = {self.enable_freeu}') # Ziqi added for FreeU
+        if self.enable_freeu:
+            self.b1 = b1; print(f'b1={self.b1}')
+            self.b2 = b2; print(f'b2={self.b2}')
+            self.s1 = s1; print(f's1={self.s1}')
+            self.s2 = s2; print(f's2={self.s2}')
+        # --------------- FreeU code ends -----------------------
+
         if use_spatial_transformer:
             assert context_dim is not None, 'Fool!! You forgot to include the dimension of your cross-attention conditioning...'
 
@@ -733,7 +767,21 @@ class UNetModel(nn.Module):
             hs.append(h)
         h = self.middle_block(h, emb, context)
         for module in self.output_blocks:
-            h = th.cat([h, hs.pop()], dim=1)
+            hs_ = hs.pop() # Ziqi added for FreeU
+
+            # --------------- FreeU code -----------------------
+            # Only operate on the first two stages
+            if self.enable_freeu:
+                if h.shape[1] == 576:
+                    h[:,:288] = h[:,:288] * self.b1
+                    hs_ = Fourier_filter(hs_, threshold=1, scale=self.s1)
+                if h.shape[1] == 384:
+                    h[:,:192] = h[:,:192] * self.b2
+                    hs_ = Fourier_filter(hs_, threshold=1, scale=self.s2)
+            # ---------------------------------------------------------
+            h = th.cat([h, hs_], dim=1) # Ziqi added for FreeU
+            # h = th.cat([h, hs.pop()], dim=1) # Ziqi removed for FreeU
+
             h = module(h, emb, context)
         h = h.type(x.dtype)
         if self.predict_codebook_ids:
