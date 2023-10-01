@@ -27,7 +27,7 @@ We propose **Collaborative Diffusion**, where users can use multiple modalities 
 We use pre-trained uni-modal diffusion models to perform multi-modal guided face generation and editing. At each step of the reverse process (i.e., from timestep t to t − 1), the **dynamic diffuser** predicts the spatial-varying and temporal-varying **influence function** to *selectively enhance or suppress the contributions of the given modality*.
 
 ## Updates
-- [10/2023] Collaborative Diffusion can support [FreeU](https://chenyangsi.top/FreeU/) now. See [here](https://github.com/ziqihuangg/Collaborative-Diffusion/freeu) for how to run Collaborative Diffusion + FreeU.
+- [10/2023] Collaborative Diffusion can support [FreeU](https://chenyangsi.top/FreeU/) now. See [here](https://github.com/ziqihuangg/Collaborative-Diffusion/tree/master/freeu) for how to run Collaborative Diffusion + FreeU.
 - [09/2023] We provide inference script of face generation driven by single modality, and the scripts and checkpoints of 256x256 resolution.
 - [09/2023] [Editing code](https://github.com/ziqihuangg/Collaborative-Diffusion#editing) is released.
 - [06/2023] We provide the preprocessed multi-modal annotations [here](https://drive.google.com/drive/folders/1rLcdN-VctJpW4k9AfSXWk0kqxh329xc4?usp=sharing).
