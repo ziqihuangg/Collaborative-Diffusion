@@ -1,9 +1,8 @@
 
 # Face Generation + FreeU
-We now integrated [FreeU](https://chenyangsi.top/FreeU/) into the LDMs to further boost synthesis quality.
+We now integrated [FreeU](https://chenyangsi.top/FreeU/) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/ChenyangSi/FreeU) into the LDMs to further boost synthesis quality.
 We adapted FreeU's [code](https://github.com/ChenyangSi/FreeU) for our face generation diffusion models.
 For more details about FreeU, please refer to the [paper](https://arxiv.org/abs/2309.11497).
-
 
 ## Mask-to-Face Generation:
 <img src="./assets/mask2face_27007.jpeg" width="100%">
