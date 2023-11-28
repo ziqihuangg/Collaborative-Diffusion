@@ -14,7 +14,7 @@ IEEE/CVF International Conference on Computer Vision (**CVPR**), 2023
 From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Technological University
 
 
-## Overview
+## :open_book: Overview
 <!-- ![overall_structure](./assets/fig_teaser.jpg) -->
 <img src="./assets/fig_teaser.jpg" width="100%">
 
@@ -64,7 +64,7 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
     pip install git+https://github.com/arogozhnikov/einops.git
    ```
 
-## :point_down: Download
+## :arrow_down: Download
 
 ### Download Checkpoints
 
@@ -104,7 +104,7 @@ We provide preprocessed data used in this project (see Acknowledgement for data 
 
 For more details about the annotations, please refer to [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog).
 
-## :art::sunrise_over_mountains: Generation
+## :framed_picture: Generation
 
 ### Multi-Modal-Driven Generation
 
@@ -216,7 +216,7 @@ You can edit a face image according to target mask and target text. We achieve t
 
 
 
-## Training
+## :runner: Training
 
 
 We provide the entire training pipeline, including training the VAE, uni-modal diffusion models, and our proposed dynamic diffusers.
@@ -263,7 +263,7 @@ If you are only interested in training dynamic diffusers, you can use our provid
     ```
 
 
-## Citation
+## :fountain_pen: Citation
 
    If you find our repo useful for your research, please consider citing our paper:
 
