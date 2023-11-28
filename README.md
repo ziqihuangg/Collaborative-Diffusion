@@ -1,5 +1,10 @@
 # Collaborative Diffusion (CVPR 2023)
 
+<!-- [![arXiv](https://img.shields.io/badge/arXiv-2311.99999-b31b1b.svg)](https://arxiv.org/abs/2311.99999) -->
+[![Paper](https://img.shields.io/badge/cs.CV-Paper-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2304.10530)
+[![Project Page](https://img.shields.io/badge/Project-Website-green?logo=googlechrome&logoColor=green)](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)
+[![Video](https://img.shields.io/badge/YouTube-Video-c4302b?logo=youtube&logoColor=red)](https://www.youtube.com/watch?v=inLK4c8sNhc)
+[![Visitor](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fziqihuangg%2FCollaborative-Diffusion&count_bg=%23FFA500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visitors&edge_flat=false)](https://hits.seeyoufarm.com)
 
 This repository contains the implementation of the following paper:
 > **Collaborative Diffusion for Multi-Modal Face Generation and Editing**<br>
@@ -7,10 +12,6 @@ This repository contains the implementation of the following paper:
 IEEE/CVF International Conference on Computer Vision (**CVPR**), 2023
 
 From [MMLab@NTU](https://www.mmlab-ntu.com/) affiliated with S-Lab, Nanyang Technological University
-
-[[Paper](https://arxiv.org/abs/2304.10530)] |
-[[Project Page](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)] |
-[[Video](https://www.youtube.com/watch?v=inLK4c8sNhc)]
 
 
 ## Overview
@@ -26,7 +27,7 @@ We propose **Collaborative Diffusion**, where users can use multiple modalities 
 
 We use pre-trained uni-modal diffusion models to perform multi-modal guided face generation and editing. At each step of the reverse process (i.e., from timestep t to t − 1), the **dynamic diffuser** predicts the spatial-varying and temporal-varying **influence function** to *selectively enhance or suppress the contributions of the given modality*.
 
-## Updates
+## :heavy_check_mark: Updates
 - [10/2023] Collaborative Diffusion can support [FreeU](https://chenyangsi.top/FreeU/) now. See [here](https://github.com/ziqihuangg/Collaborative-Diffusion/tree/master/freeu) for how to run Collaborative Diffusion + FreeU.
 - [09/2023] We provide inference script of face generation driven by single modality, and the scripts and checkpoints of 256x256 resolution.
 - [09/2023] [Editing code](https://github.com/ziqihuangg/Collaborative-Diffusion#editing) is released.
@@ -38,7 +39,7 @@ We use pre-trained uni-modal diffusion models to perform multi-modal guided face
 - [04/2023] Inference code for multi-modal face generation (512x512) released.
 
 
-## Installation
+## :hammer: Installation
 
 1. Clone repo
 
@@ -63,7 +64,7 @@ If you already have an `ldm` environment installed according to [LDM](https://gi
     pip install git+https://github.com/arogozhnikov/einops.git
    ```
 
-## Download
+## :point_down: Download
 
 ### Download Checkpoints
 
@@ -103,7 +104,7 @@ We provide preprocessed data used in this project (see Acknowledgement for data 
 
 For more details about the annotations, please refer to [CelebA-Dialog](https://github.com/ziqihuangg/CelebA-Dialog).
 
-## Generation
+## :art::sunrise_over_mountains: Generation
 
 ### Multi-Modal-Driven Generation
 
@@ -192,7 +193,7 @@ You can control face generation using text and segmentation mask.
 
 
 
-## Editing
+## :art: Editing
 You can edit a face image according to target mask and target text. We achieve this by collaborating multiple uni-modal edits. We use [Imagic](https://imagic-editing.github.io/) to perform the uni-modal edits.
 
 1. Perform text-based editing.
@@ -276,7 +277,7 @@ If you are only interested in training dynamic diffusers, you can use our provid
    ```
 
 
-## Acknowledgement
+## :purple_heart: Acknowledgement
 
 The codebase is maintained by [Ziqi Huang](https://ziqihuangg.github.io/).
 
