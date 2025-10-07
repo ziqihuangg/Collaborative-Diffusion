@@ -4,7 +4,6 @@
 [![Paper](https://img.shields.io/badge/cs.CV-Paper-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2304.10530)
 [![Project Page](https://img.shields.io/badge/Project-Website-b31b1b?logo=googlechrome&logoColor=red)](https://ziqihuangg.github.io/projects/collaborative-diffusion.html)
 [![Video](https://img.shields.io/badge/YouTube-Video-c4302b?logo=youtube&logoColor=red)](https://www.youtube.com/watch?v=inLK4c8sNhc)
-[![Visitor](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fziqihuangg%2FCollaborative-Diffusion&count_bg=%23FFA500&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visitors&edge_flat=false)](https://hits.seeyoufarm.com)
 ![Visitors](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2Fziqihuangg%2FCollaborative-Diffusion&label=Visitors&icon=people&color=%23b31b1b)
 
 This repository contains the implementation of the following paper:
